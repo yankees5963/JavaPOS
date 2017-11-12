@@ -3,6 +3,7 @@ package com.pos;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.List;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -24,7 +25,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -45,6 +48,7 @@ public class AdminScreen
 	private JTextField ProdName;
 	private JTextField Cost;
 	private JTextField textField_1;
+	protected JComboBox SubDpt;
 
 	public AdminScreen()
 	{
@@ -165,8 +169,22 @@ public class AdminScreen
 		lblDepartment.setBounds(10, 36, 84, 14);
 		Inventory.add(lblDepartment);
 		
-		JComboBox Dept = new JComboBox();
-		Dept.setModel(new DefaultComboBoxModel(new String[] {"Food", "Drink"}));
+		
+		ArrayList<String> depts = getDept();
+		JComboBox Dept = new JComboBox(depts.toArray());
+		Dept.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				ArrayList<String> subdept = getSubDept(Dept.getSelectedItem().toString());
+				SubDpt.removeAllItems();
+				for(String items : subdept)
+				{
+					SubDpt.addItem(items);
+				}
+				
+			}
+		});
 		Dept.setToolTipText("");
 		Dept.setBounds(104, 33, 162, 20);
 		Inventory.add(Dept);
@@ -175,8 +193,8 @@ public class AdminScreen
 		lblSubDepartment.setBounds(10, 61, 84, 14);
 		Inventory.add(lblSubDepartment);
 		
-		JComboBox SubDpt = new JComboBox();
-		SubDpt.setModel(new DefaultComboBoxModel(new String[] {"Pepsi", "Coke"}));
+		ArrayList<String> subdept = getSubDept(Dept.getSelectedItem().toString());
+		SubDpt= new JComboBox(subdept.toArray());
 		SubDpt.setBounds(104, 58, 162, 20);
 		Inventory.add(SubDpt);
 		
@@ -221,6 +239,52 @@ public class AdminScreen
 		AdminScreen.setVisible(true);
 		
 	}
+	private ArrayList<String> getSubDept(String Dept) 
+	{
+		ArrayList<String> depts = new ArrayList<String>();
+		Connection con = new SQLConnection().openSQL();
+		try 
+		{
+			String sq= "SELECT SubName from Departments WHERE [isSub] = ? AND [DeptName] = ?";
+			PreparedStatement ps = con.prepareStatement(sq);
+			ps.setInt(1, 1);
+			ps.setString(2, Dept);
+			ResultSet r = ps.executeQuery();
+			while(r.next())
+			{
+				depts.add(r.getString("SubName"));
+			}
+			con.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return depts;
+	}
+
+	private ArrayList<String> getDept() 
+	{
+		ArrayList<String> depts = new ArrayList<String>();
+		Connection con = new SQLConnection().openSQL();
+		try 
+		{
+			String sq= "SELECT DeptName from Departments WHERE [isSub] = 0";
+			PreparedStatement ps = con.prepareStatement(sq);
+			ResultSet r = ps.executeQuery();
+			while(r.next())
+			{
+				depts.add(r.getString("DeptName"));
+			}
+			con.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return depts;
+	}
+
 	protected void CheckData() 
 	{
 		String p1 = password1.getText().toString();
