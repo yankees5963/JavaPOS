@@ -10,6 +10,9 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
+import java.awt.Checkbox;
+import java.awt.CheckboxGroup;
+
 import javax.swing.JTabbedPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JTable;
@@ -30,9 +33,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class AdminScreen
 {
@@ -49,6 +55,8 @@ public class AdminScreen
 	private JTextField Cost;
 	private JTextField textField_1;
 	protected JComboBox SubDpt;
+	private JTextField textField;
+	private JTextField textField_2;
 
 	public AdminScreen()
 	{
@@ -116,7 +124,7 @@ public class AdminScreen
 		JButton btnAddUser = new JButton("Add User");
 		btnAddUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				CheckData();
+				AddUser();
 			}
 		});
 		btnAddUser.setBounds(132, 177, 89, 23);
@@ -140,7 +148,7 @@ public class AdminScreen
 		adPanel.add(lblRoomForAdding);
 		
 		JPanel Inventory = new JPanel();
-		tabbedPane.addTab("AddItems", null, Inventory, null);
+		tabbedPane.addTab("Add Items", null, Inventory, null);
 		Inventory.setLayout(null);
 		
 		JLabel lblBarcode = new JLabel("BarCode:");
@@ -162,7 +170,7 @@ public class AdminScreen
 		ProdName.setColumns(10);
 		
 		JButton btnAddItem = new JButton("Add Item");
-		btnAddItem.setBounds(160, 460, 89, 23);
+		btnAddItem.setBounds(177, 192, 89, 23);
 		Inventory.add(btnAddItem);
 		
 		JLabel lblDepartment = new JLabel("Department:");
@@ -211,27 +219,89 @@ public class AdminScreen
 		lblTaxable.setBounds(10, 139, 84, 14);
 		Inventory.add(lblTaxable);
 		
-		JCheckBox chckbxNoTax = new JCheckBox("No");
-		chckbxNoTax.setSelected(true);
-		chckbxNoTax.setBounds(104, 135, 46, 23);
+		ButtonGroup taxgroup = new ButtonGroup();
+		
+		JCheckBox chckbxNoTax = new JCheckBox("No", true);
+		taxgroup.add(chckbxNoTax);
+		chckbxNoTax.setBounds(104, 135, 39, 23);
 		Inventory.add(chckbxNoTax);
 		
-		JCheckBox chckbxTax = new JCheckBox("Tax 1");
-		chckbxTax.setBounds(152, 135, 53, 23);
+		JCheckBox chckbxTax = new JCheckBox("Tax 1", false);
+		chckbxTax.setBounds(145, 135, 62, 23);
 		Inventory.add(chckbxTax);
 		
-		JCheckBox chckbxTax2 = new JCheckBox("Tax 2");
-		chckbxTax2.setBounds(207, 135, 59, 23);
+		JCheckBox chckbxTax2 = new JCheckBox("Tax 2", false);
+		chckbxTax2.setBounds(204, 135, 62, 23);
 		Inventory.add(chckbxTax2);
 		
-		JLabel lblStock = new JLabel("Stock:");
-		lblStock.setBounds(10, 164, 46, 14);
+		taxgroup.add(chckbxNoTax);
+		taxgroup.add(chckbxTax);
+		taxgroup.add(chckbxTax2);
+		
+		JLabel lblStock = new JLabel("Stock On Hand:");
+		lblStock.setBounds(10, 164, 84, 14);
 		Inventory.add(lblStock);
 		
 		textField_1 = new JTextField();
 		textField_1.setBounds(104, 161, 162, 20);
 		Inventory.add(textField_1);
 		textField_1.setColumns(10);
+		
+		JLabel lblAddDepartments = new JLabel("Add Department");
+		lblAddDepartments.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblAddDepartments.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddDepartments.setBounds(412, 11, 243, 14);
+		Inventory.add(lblAddDepartments);
+		
+		JLabel lblDepartmentName = new JLabel("Department Name:");
+		lblDepartmentName.setBounds(412, 36, 97, 14);
+		Inventory.add(lblDepartmentName);
+		
+		textField = new JTextField();
+		textField.setBounds(507, 33, 148, 20);
+		Inventory.add(textField);
+		textField.setColumns(10);
+		
+		JButton btnAddDepartment = new JButton("Add Department");
+		btnAddDepartment.setBounds(538, 57, 117, 23);
+		Inventory.add(btnAddDepartment);
+		
+		JLabel lblAddSubDepartments = new JLabel("Add  Sub-Department");
+		lblAddSubDepartments.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddSubDepartments.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblAddSubDepartments.setBounds(412, 105, 243, 23);
+		Inventory.add(lblAddSubDepartments);
+		
+		JLabel label = new JLabel("Department Name:");
+		label.setBounds(412, 164, 97, 14);
+		Inventory.add(label);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(507, 161, 148, 20);
+		Inventory.add(textField_2);
+		
+		JButton btnAddSubdepartment = new JButton("Add Sub-Department");
+		btnAddSubdepartment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnAddSubdepartment.setBounds(517, 192, 138, 23);
+		Inventory.add(btnAddSubdepartment);
+		
+		JComboBox comboBox = new JComboBox(new Object[]{});
+		comboBox.setToolTipText("");
+		comboBox.setBounds(507, 136, 148, 20);
+		Inventory.add(comboBox);
+		
+		JLabel label_1 = new JLabel("Department:");
+		label_1.setBounds(412, 139, 84, 14);
+		Inventory.add(label_1);
+		
+		JTextPane textPane_1 = new JTextPane();
+		textPane_1.setEditable(false);
+		textPane_1.setBounds(298, 379, 211, 92);
+		Inventory.add(textPane_1);
 		AdminScreen.setTitle("CMSC 451 POS  -- Admin Screen");
 		AdminScreen.setBounds(100, 100, 915, 663);
 		AdminScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -285,7 +355,7 @@ public class AdminScreen
 		return depts;
 	}
 
-	protected void CheckData() 
+	protected void AddUser() 
 	{
 		String p1 = password1.getText().toString();
 		String p2 = Password2.getText().toString();
