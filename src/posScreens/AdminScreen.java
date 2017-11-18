@@ -56,9 +56,7 @@ public class AdminScreen
 	private JTextField ProdName;
 	private JTextField Cost;
 	private JTextField textField_1;
-	protected JComboBox SubDpt;
 	private JTextField textField;
-	private JTextField textField_2;
 
 	public AdminScreen()
 	{
@@ -163,16 +161,16 @@ public class AdminScreen
 		Barcode.setColumns(10);
 		
 		JLabel lblProductName = new JLabel("Product Name:");
-		lblProductName.setBounds(10, 86, 84, 14);
+		lblProductName.setBounds(10, 61, 84, 14);
 		Inventory.add(lblProductName);
 		
 		ProdName = new JTextField();
-		ProdName.setBounds(104, 83, 162, 20);
+		ProdName.setBounds(104, 58, 162, 20);
 		Inventory.add(ProdName);
 		ProdName.setColumns(10);
 		
 		JButton btnAddItem = new JButton("Add Item");
-		btnAddItem.setBounds(177, 192, 89, 23);
+		btnAddItem.setBounds(177, 164, 89, 23);
 		Inventory.add(btnAddItem);
 		
 		JLabel lblDepartment = new JLabel("Department:");
@@ -182,70 +180,44 @@ public class AdminScreen
 		
 		ArrayList<String> depts = getDept();
 		JComboBox Dept = new JComboBox(depts.toArray());
-		Dept.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				ArrayList<String> subdept = getSubDept(Dept.getSelectedItem().toString());
-				SubDpt.removeAllItems();
-				for(String items : subdept)
-				{
-					SubDpt.addItem(items);
-				}
-				
-			}
-		});
 		Dept.setToolTipText("");
 		Dept.setBounds(104, 33, 162, 20);
 		Inventory.add(Dept);
 		
-		JLabel lblSubDepartment = new JLabel("Sub Department:");
-		lblSubDepartment.setBounds(10, 61, 84, 14);
-		Inventory.add(lblSubDepartment);
-		
-		ArrayList<String> subdept = getSubDept(Dept.getSelectedItem().toString());
-		SubDpt= new JComboBox(subdept.toArray());
-		SubDpt.setBounds(104, 58, 162, 20);
-		Inventory.add(SubDpt);
 		
 		JLabel lblCost = new JLabel("Cost:");
-		lblCost.setBounds(10, 111, 46, 14);
+		lblCost.setBounds(10, 86, 46, 14);
 		Inventory.add(lblCost);
 		
 		Cost = new JTextField();
-		Cost.setBounds(104, 108, 162, 20);
+		Cost.setBounds(104, 83, 162, 20);
 		Inventory.add(Cost);
 		Cost.setColumns(10);
 		
 		JLabel lblTaxable = new JLabel("Taxable:");
-		lblTaxable.setBounds(10, 139, 84, 14);
+		lblTaxable.setBounds(10, 111, 84, 14);
 		Inventory.add(lblTaxable);
 		
 		ButtonGroup taxgroup = new ButtonGroup();
 		
-		JCheckBox chckbxNoTax = new JCheckBox("No", true);
+		JRadioButton chckbxNoTax = new JRadioButton("Non-Tax", true);
 		taxgroup.add(chckbxNoTax);
-		chckbxNoTax.setBounds(104, 135, 39, 23);
+		chckbxNoTax.setBounds(104, 107, 93, 23);
 		Inventory.add(chckbxNoTax);
 		
-		JCheckBox chckbxTax = new JCheckBox("Tax 1", false);
-		chckbxTax.setBounds(145, 135, 62, 23);
+		JRadioButton chckbxTax = new JRadioButton("Taxable", false);
+		chckbxTax.setBounds(199, 107, 71, 23);
 		Inventory.add(chckbxTax);
-		
-		JCheckBox chckbxTax2 = new JCheckBox("Tax 2", false);
-		chckbxTax2.setBounds(204, 135, 62, 23);
-		Inventory.add(chckbxTax2);
 		
 		taxgroup.add(chckbxNoTax);
 		taxgroup.add(chckbxTax);
-		taxgroup.add(chckbxTax2);
 		
 		JLabel lblStock = new JLabel("Stock On Hand:");
-		lblStock.setBounds(10, 164, 84, 14);
+		lblStock.setBounds(10, 136, 84, 14);
 		Inventory.add(lblStock);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(104, 161, 162, 20);
+		textField_1.setBounds(104, 133, 162, 20);
 		Inventory.add(textField_1);
 		textField_1.setColumns(10);
 		
@@ -260,45 +232,13 @@ public class AdminScreen
 		Inventory.add(lblDepartmentName);
 		
 		textField = new JTextField();
-		textField.setBounds(507, 33, 148, 20);
+		textField.setBounds(519, 33, 148, 20);
 		Inventory.add(textField);
 		textField.setColumns(10);
 		
 		JButton btnAddDepartment = new JButton("Add Department");
-		btnAddDepartment.setBounds(538, 57, 117, 23);
+		btnAddDepartment.setBounds(550, 65, 117, 23);
 		Inventory.add(btnAddDepartment);
-		
-		JLabel lblAddSubDepartments = new JLabel("Add  Sub-Department");
-		lblAddSubDepartments.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAddSubDepartments.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblAddSubDepartments.setBounds(412, 105, 243, 23);
-		Inventory.add(lblAddSubDepartments);
-		
-		JLabel label = new JLabel("Department Name:");
-		label.setBounds(412, 164, 97, 14);
-		Inventory.add(label);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(507, 161, 148, 20);
-		Inventory.add(textField_2);
-		
-		JButton btnAddSubdepartment = new JButton("Add Sub-Department");
-		btnAddSubdepartment.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnAddSubdepartment.setBounds(517, 192, 138, 23);
-		Inventory.add(btnAddSubdepartment);
-		
-		JComboBox comboBox = new JComboBox(new Object[]{});
-		comboBox.setToolTipText("");
-		comboBox.setBounds(507, 136, 148, 20);
-		Inventory.add(comboBox);
-		
-		JLabel label_1 = new JLabel("Department:");
-		label_1.setBounds(412, 139, 84, 14);
-		Inventory.add(label_1);
 		
 		JTextPane textPane_1 = new JTextPane();
 		textPane_1.setEditable(false);
@@ -311,37 +251,14 @@ public class AdminScreen
 		AdminScreen.setVisible(true);
 		
 	}
-	private ArrayList<String> getSubDept(String Dept) 
-	{
-		ArrayList<String> depts = new ArrayList<String>();
-		Connection con = new SQLConnection().openSQL();
-		try 
-		{
-			String sq= "SELECT SubName from Departments WHERE [isSub] = ? AND [DeptName] = ?";
-			PreparedStatement ps = con.prepareStatement(sq);
-			ps.setInt(1, 1);
-			ps.setString(2, Dept);
-			ResultSet r = ps.executeQuery();
-			while(r.next())
-			{
-				depts.add(r.getString("SubName"));
-			}
-			con.close();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return depts;
-	}
-
+	
 	private ArrayList<String> getDept() 
 	{
 		ArrayList<String> depts = new ArrayList<String>();
 		Connection con = new SQLConnection().openSQL();
 		try 
 		{
-			String sq= "SELECT DeptName from Departments WHERE [isSub] = 0";
+			String sq= "SELECT DeptName from Departments";
 			PreparedStatement ps = con.prepareStatement(sq);
 			ResultSet r = ps.executeQuery();
 			while(r.next())
