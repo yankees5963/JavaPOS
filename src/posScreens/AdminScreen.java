@@ -18,6 +18,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -45,7 +48,7 @@ import java.awt.Font;
 public class AdminScreen
 {
 	
-	JFrame AdminScreen = new JFrame();
+	JFrame AdminScreen;
 	private JTextField ID_Field;
 	private JPasswordField password1;
 	private JTextField FirstName;
@@ -57,7 +60,9 @@ public class AdminScreen
 	private JTextField Cost;
 	private JTextField textField_1;
 	private JTextField textField;
-
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public AdminScreen()
 	{
 		EventQueue.invokeLater(new Runnable() 
@@ -66,6 +71,7 @@ public class AdminScreen
 			{
 				try 
 				{
+					AdminScreen = new JFrame();
 					initialize();
 				} 
 				catch (Exception e) 
@@ -75,8 +81,12 @@ public class AdminScreen
 			}});
 		
 	}
-		
-	private void initialize() {	
+	public AdminScreen(JFrame inputFrame)
+	{
+		AdminScreen = inputFrame;
+	}
+	protected JFrame initialize() 
+	{	
 		AdminScreen.getContentPane().setBackground(Color.WHITE);
 		AdminScreen.setIconImage(Toolkit.getDefaultToolkit().getImage("lib/POS.png"));
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -122,7 +132,8 @@ public class AdminScreen
 		LastName.setColumns(10);
 		
 		JButton btnAddUser = new JButton("Add User");
-		btnAddUser.addActionListener(new ActionListener() {
+		btnAddUser.addActionListener(new ActionListener() 
+		{
 			public void actionPerformed(ActionEvent arg0) {
 				AddUser();
 			}
@@ -249,7 +260,7 @@ public class AdminScreen
 		AdminScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		AdminScreen.setVisible(true);
-		
+		return AdminScreen;
 	}
 	
 	private ArrayList<String> getDept() 

@@ -58,7 +58,7 @@ public class MainPOSScreen
 	}
 
 	
-	private void initialize() 
+	protected JFrame initialize() 
 	{
 		POSframe.getContentPane().setBackground(Color.WHITE);
 		POSframe.setIconImage(Toolkit.getDefaultToolkit().getImage("lib/POS.png"));
@@ -103,17 +103,13 @@ public class MainPOSScreen
 		mntmAdmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent g) 
 			{
-				addAdminScreen();
-			}
-
-			private void addAdminScreen() 
-			{
-				new AdminScreen();
-				//TODO fix bug where closing window closes out of program completely.
-				//Bug will cause both windows to close when closing admin screen, but leaves admin screen open when closing Main Screen.
-				
+				POSframe.getContentPane().removeAll();
+				POSframe = new AdminScreen(POSframe).initialize();
+				POSframe.revalidate();
+				POSframe.repaint();
 			}
         });
+
 		mnFile.add(mntmAdmin);
 		mnFile.add(mntmLogOut);
 		mnFile.add(mntmExit);
@@ -121,9 +117,9 @@ public class MainPOSScreen
 		
 		
 		POSframe.setVisible(true);
+		return POSframe;
 	
 	}
-
 
 
 	protected void logout() 
