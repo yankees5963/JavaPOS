@@ -10,6 +10,8 @@ import java.sql.*;
 
 import javax.swing.*;
 
+import sql.SQLConnection;
+
 /*
  *	Group Charlie 
  * 	CMSC 495

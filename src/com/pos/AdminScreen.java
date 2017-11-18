@@ -1,5 +1,6 @@
 package com.pos;
 
+import sql.*;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
@@ -22,6 +23,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
 import javax.xml.bind.DatatypeConverter;
+
 import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

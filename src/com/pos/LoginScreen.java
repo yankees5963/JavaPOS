@@ -27,6 +27,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.awt.event.ActionEvent;
 import javax.xml.bind.DatatypeConverter;
+
+import sql.SQLConnection;
+
 import javax.swing.JPasswordField;
 import java.awt.Toolkit;
 
