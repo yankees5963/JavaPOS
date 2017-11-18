@@ -1,4 +1,4 @@
-package com.pos;
+package posScreens;
 
 /*
  *	Group Charlie 

@@ -1,4 +1,4 @@
-package com.pos;
+package posScreens;
 
 import java.awt.Color;
 import java.awt.EventQueue;

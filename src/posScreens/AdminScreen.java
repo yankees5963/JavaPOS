@@ -1,4 +1,4 @@
-package com.pos;
+package posScreens;
 
 import sql.*;
 import java.awt.Color;
