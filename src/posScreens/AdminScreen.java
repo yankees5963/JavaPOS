@@ -49,6 +49,7 @@ public class AdminScreen
 {
 	
 	JFrame AdminScreen;
+	JTabbedPane tabbedPane;
 	private JTextField ID_Field;
 	private JPasswordField password1;
 	private JTextField FirstName;
@@ -87,11 +88,16 @@ public class AdminScreen
 	}
 	protected JFrame initialize() 
 	{	
-		AdminScreen.getContentPane().setBackground(Color.WHITE);
-		AdminScreen.setIconImage(Toolkit.getDefaultToolkit().getImage("lib/POS.png"));
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		AdminScreen.getContentPane().add(tabbedPane);
+		createWindow();
+		addUserPanel();
+		addInvPanel();
 		
+		AdminScreen.setVisible(true);
+		return AdminScreen;
+	}
+	
+	protected void addUserPanel() 
+	{
 		JPanel adPanel = new JPanel();
 		tabbedPane.addTab("Add User", null, adPanel, null);
 		adPanel.setLayout(null);
@@ -113,21 +119,21 @@ public class AdminScreen
 		adPanel.add(lblLastName);
 		
 		ID_Field = new JTextField();
-		ID_Field.setBounds(117, 35, 104, 20);
+		ID_Field.setBounds(152, 35, 104, 20);
 		adPanel.add(ID_Field);
 		ID_Field.setColumns(10);
 		
 		password1 = new JPasswordField();
-		password1.setBounds(117, 61, 104, 20);
+		password1.setBounds(152, 61, 104, 20);
 		adPanel.add(password1);
 		
 		FirstName = new JTextField();
-		FirstName.setBounds(117, 122, 104, 20);
+		FirstName.setBounds(152, 122, 104, 20);
 		adPanel.add(FirstName);
 		FirstName.setColumns(10);
 		
 		LastName = new JTextField();
-		LastName.setBounds(117, 147, 104, 20);
+		LastName.setBounds(152, 147, 104, 20);
 		adPanel.add(LastName);
 		LastName.setColumns(10);
 		
@@ -138,26 +144,36 @@ public class AdminScreen
 				AddUser();
 			}
 		});
-		btnAddUser.setBounds(132, 177, 89, 23);
+		btnAddUser.setBounds(162, 178, 89, 23);
 		adPanel.add(btnAddUser);
 		
 		textPane = new JTextPane();
 		textPane.setEditable(false);
-		textPane.setBounds(10, 211, 211, 92);
+		textPane.setBounds(10, 235, 211, 92);
 		adPanel.add(textPane);
 		
 		JLabel lblReenterPassword = new JLabel("Re-Enter Password:");
-		lblReenterPassword.setBounds(10, 95, 97, 14);
+		lblReenterPassword.setBounds(10, 95, 115, 14);
 		adPanel.add(lblReenterPassword);
 		
 		Password2 = new JPasswordField();
-		Password2.setBounds(117, 92, 104, 20);
+		Password2.setBounds(152, 92, 104, 20);
 		adPanel.add(Password2);
 		
 		JLabel lblRoomForAdding = new JLabel("Room for adding Permission options");
 		lblRoomForAdding.setBounds(540, 111, 223, 89);
 		adPanel.add(lblRoomForAdding);
 		
+	}
+	protected void createWindow()
+	{
+		AdminScreen.getContentPane().setBackground(Color.WHITE);
+		AdminScreen.setIconImage(Toolkit.getDefaultToolkit().getImage("lib/POS.png"));
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		AdminScreen.getContentPane().add(tabbedPane);
+	}
+	protected void addInvPanel()
+	{
 		JPanel Inventory = new JPanel();
 		tabbedPane.addTab("Add Items", null, Inventory, null);
 		Inventory.setLayout(null);
@@ -224,11 +240,11 @@ public class AdminScreen
 		taxgroup.add(chckbxTax);
 		
 		JLabel lblStock = new JLabel("Stock On Hand:");
-		lblStock.setBounds(10, 136, 84, 14);
+		lblStock.setBounds(10, 136, 100, 14);
 		Inventory.add(lblStock);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(104, 133, 162, 20);
+		textField_1.setBounds(127, 133, 139, 20);
 		Inventory.add(textField_1);
 		textField_1.setColumns(10);
 		
@@ -239,28 +255,22 @@ public class AdminScreen
 		Inventory.add(lblAddDepartments);
 		
 		JLabel lblDepartmentName = new JLabel("Department Name:");
-		lblDepartmentName.setBounds(412, 36, 97, 14);
+		lblDepartmentName.setBounds(412, 36, 113, 14);
 		Inventory.add(lblDepartmentName);
 		
 		textField = new JTextField();
-		textField.setBounds(519, 33, 148, 20);
+		textField.setBounds(535, 33, 148, 20);
 		Inventory.add(textField);
 		textField.setColumns(10);
 		
 		JButton btnAddDepartment = new JButton("Add Department");
-		btnAddDepartment.setBounds(550, 65, 117, 23);
+		btnAddDepartment.setBounds(535, 57, 148, 23);
 		Inventory.add(btnAddDepartment);
 		
 		JTextPane textPane_1 = new JTextPane();
 		textPane_1.setEditable(false);
 		textPane_1.setBounds(298, 379, 211, 92);
 		Inventory.add(textPane_1);
-		AdminScreen.setTitle("CMSC 451 POS  -- Admin Screen");
-		AdminScreen.setBounds(100, 100, 915, 663);
-		AdminScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		AdminScreen.setVisible(true);
-		return AdminScreen;
 	}
 	
 	private ArrayList<String> getDept() 

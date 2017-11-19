@@ -68,6 +68,13 @@ public class LoginScreen {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		createWindow();
+		addPanel();
+		frmCmscPos.setVisible(true);
+	}
+	
+	private void createWindow()
+	{
 		frmCmscPos = new JFrame();
 		frmCmscPos.setIconImage(Toolkit.getDefaultToolkit().getImage("lib/POS.png"));
 		frmCmscPos.getContentPane().setBackground(Color.WHITE);
@@ -75,6 +82,9 @@ public class LoginScreen {
 		frmCmscPos.setBounds(100, 100, 683, 498);
 		frmCmscPos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCmscPos.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+	}
+	private void addPanel()
+	{
 		JPanel panel = new JPanel();
 		frmCmscPos.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -112,49 +122,48 @@ public class LoginScreen {
 		lblErrorbox.setEnabled(false);
 		lblErrorbox.setBounds(393, 347, 89, 27);
 		panel.add(lblErrorbox);
-		frmCmscPos.setVisible(true);
 	}
 
-private void checkLogin()
-{
-		Connection con = new SQLConnection().openSQL();
-		try {
-			String hash = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-256").digest(passwordField.getText().toString().getBytes("UTF-8")));
-			String sq= "SELECT UserId from USERS WHERE [LoginID] = ? AND [Password] = ? AND [Active] = ?";
-			PreparedStatement ps = con.prepareStatement(sq);
-			//Check LoginID value
-			ps.setString(1, UserIDField.getText().toString());
-			//Password Hash to check in database
-			ps.setString(2, hash);
-			//Only check for Active Users, Inactive should not be able to login
-			ps.setInt(3, 1);
-			ResultSet r = ps.executeQuery();
-			if(r.next())
-			{
-				lblErrorbox.setText("");
-				lblErrorbox.setEnabled(false);
-				int id = r.getInt("UserID");
-				con.close();
-				Login(id);
-			}
-			else 
-			{
-				lblErrorbox.setText("INVALID LOGIN");
-				lblErrorbox.setEnabled(true);
-				con.close();
+	private void checkLogin()
+	{
+			Connection con = new SQLConnection().openSQL();
+			try {
+				String hash = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-256").digest(passwordField.getText().toString().getBytes("UTF-8")));
+				String sq= "SELECT UserId from USERS WHERE [LoginID] = ? AND [Password] = ? AND [Active] = ?";
+				PreparedStatement ps = con.prepareStatement(sq);
+				//Check LoginID value
+				ps.setString(1, UserIDField.getText().toString());
+				//Password Hash to check in database
+				ps.setString(2, hash);
+				//Only check for Active Users, Inactive should not be able to login
+				ps.setInt(3, 1);
+				ResultSet r = ps.executeQuery();
+				if(r.next())
+				{
+					lblErrorbox.setText("");
+					lblErrorbox.setEnabled(false);
+					int id = r.getInt("UserID");
+					con.close();
+					Login(id);
+				}
+				else 
+				{
+					lblErrorbox.setText("INVALID LOGIN");
+					lblErrorbox.setEnabled(true);
+					con.close();
+				}
+				
+				
+			} catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
+				e.printStackTrace();
 			}
 			
-			
-		} catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		
-}
-
-private void Login(int id) 
-{
-	this.frmCmscPos.dispose();
-	new MainPOSScreen(id);
+	}
 	
-}
+	private void Login(int id) 
+	{
+		this.frmCmscPos.dispose();
+		new MainPOSScreen(id);
+		
+	}
 }

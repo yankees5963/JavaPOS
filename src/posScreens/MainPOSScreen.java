@@ -58,7 +58,19 @@ public class MainPOSScreen
 	}
 
 	
-	protected JFrame initialize() 
+	protected void initialize() 
+	{
+		createWindow();
+		addPanel();
+		
+		
+		
+		
+		POSframe.setVisible(true);
+		//return POSframe;
+	
+	}
+	protected void createWindow()
 	{
 		POSframe.getContentPane().setBackground(Color.WHITE);
 		POSframe.setIconImage(Toolkit.getDefaultToolkit().getImage("lib/POS.png"));
@@ -66,7 +78,9 @@ public class MainPOSScreen
 		POSframe.setBounds(100, 100, 915, 663);
 		POSframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		POSframe.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
-		
+	}
+	protected void addPanel()
+	{
 		JPanel panel = new JPanel();
 		POSframe.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -75,6 +89,10 @@ public class MainPOSScreen
 		lblDemo.setBounds(291, 219, 264, 107);
 		panel.add(lblDemo);
 		
+		addMenuBar();
+	}
+	protected void addMenuBar()
+	{
 		JMenuBar menuBar = new JMenuBar();
 		POSframe.setJMenuBar(menuBar);
 		
@@ -113,12 +131,6 @@ public class MainPOSScreen
 		mnFile.add(mntmAdmin);
 		mnFile.add(mntmLogOut);
 		mnFile.add(mntmExit);
-		
-		
-		
-		POSframe.setVisible(true);
-		return POSframe;
-	
 	}
 
 
