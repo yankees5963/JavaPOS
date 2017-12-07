@@ -11,6 +11,9 @@ import java.sql.*;
 import javax.swing.*;
 
 import sql.SQLConnection;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.border.BevelBorder;
+import java.awt.Font;
 
 /*
  *	Group Charlie 
@@ -25,6 +28,9 @@ public class MainPOSScreen
 	private JFrame POSframe = new JFrame();
 	private int UserID;
 	private String Fname,Lname;
+	private JTable table;
+	private JTextField textField;
+	private JTextField TotalField;
 	
 	public MainPOSScreen(int id)
 	{
@@ -85,9 +91,65 @@ public class MainPOSScreen
 		POSframe.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblDemo = new JLabel("This is where POS program goes");
-		lblDemo.setBounds(291, 219, 264, 107);
-		panel.add(lblDemo);
+		table = new JTable();
+		table.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Barcode", "Item Name", "Quantity", "Price"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, Integer.class, Double.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setPreferredWidth(160);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(1).setPreferredWidth(320);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(3).setResizable(false);
+		table.setBounds(10, 107, 513, 469);
+		panel.add(table);
+		
+		JLabel lblEnterBarcode = new JLabel("Enter Barcode:");
+		lblEnterBarcode.setBounds(10, 64, 93, 14);
+		panel.add(lblEnterBarcode);
+		
+		textField = new JTextField();
+		textField.setBounds(98, 61, 302, 20);
+		panel.add(textField);
+		textField.setColumns(10);
+		
+		JButton btnAddItem = new JButton("Add Item");
+		btnAddItem.setBounds(435, 60, 89, 23);
+		panel.add(btnAddItem);
+		
+		JButton btnNewButton = new JButton("Pay");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnNewButton.setBounds(602, 175, 287, 83);
+		panel.add(btnNewButton);
+		
+		TotalField = new JTextField();
+		TotalField.setFont(new Font("Tahoma", Font.PLAIN, 60));
+		TotalField.setText("$0.00");
+		TotalField.setBounds(602, 88, 287, 76);
+		panel.add(TotalField);
+		TotalField.setColumns(10);
 		
 		addMenuBar();
 	}
