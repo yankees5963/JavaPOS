@@ -9,11 +9,13 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 
 import sql.SQLConnection;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.border.BevelBorder;
 import java.awt.Font;
+import java.awt.BorderLayout;
+import javax.swing.border.BevelBorder;
+import javax.swing.table.DefaultTableModel;
 
 /*
  *	Group Charlie 
@@ -28,9 +30,9 @@ public class MainPOSScreen
 	private JFrame POSframe = new JFrame();
 	private int UserID;
 	private String Fname,Lname;
-	private JTable table;
 	private JTextField textField;
 	private JTextField TotalField;
+	private JTable table;
 	
 	public MainPOSScreen(int id)
 	{
@@ -91,37 +93,7 @@ public class MainPOSScreen
 		POSframe.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		table = new JTable();
-		table.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Barcode", "Item Name", "Quantity", "Price"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, Integer.class, Double.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(160);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(320);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.setBounds(10, 107, 513, 469);
-		panel.add(table);
+		
 		
 		JLabel lblEnterBarcode = new JLabel("Enter Barcode:");
 		lblEnterBarcode.setBounds(10, 64, 93, 14);
@@ -150,6 +122,42 @@ public class MainPOSScreen
 		TotalField.setBounds(602, 88, 287, 76);
 		panel.add(TotalField);
 		TotalField.setColumns(10);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportBorder(null);
+		scrollPane.setBounds(10, 89, 582, 503);
+		
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Barcode", "Item Name", "Quantity", "Price"
+			}
+		) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, Integer.class, Double.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setMinWidth(14);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(3).setResizable(false);
+		table.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		table.setBounds(0, 0, 1, 1);
+		scrollPane.setViewportView(table);
+		
+		panel.add(scrollPane);
 		
 		addMenuBar();
 	}
