@@ -110,7 +110,9 @@ public class MainPOSScreen
 		
 		JButton btnNewButton = new JButton("Pay");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				JOptionPane.showMessageDialog(panel, "Purchase has been completed! Thank you!");
 			}
 		});
 		btnNewButton.setBounds(602, 175, 287, 83);
