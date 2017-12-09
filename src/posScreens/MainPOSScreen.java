@@ -113,6 +113,7 @@ public class MainPOSScreen
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				JOptionPane.showMessageDialog(panel, "Purchase has been completed! Thank you!");
+				//TODO Clear Order & Write to Transaction table
 			}
 		});
 		btnNewButton.setBounds(602, 175, 287, 83);
