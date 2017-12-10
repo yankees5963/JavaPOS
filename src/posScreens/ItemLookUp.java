@@ -35,7 +35,6 @@ public class ItemLookUp {
 		ItemLookUpFrame.setVisible(true);
 	}
 	
-	
 	protected void createWindow()
 	{
 		ItemLookUpFrame.getContentPane().setBackground(Color.WHITE);
