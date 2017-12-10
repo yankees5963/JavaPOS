@@ -43,8 +43,7 @@ public class ItemLookUp {
 		ItemLookUpFrame.setTitle("Item Look Up");
 		ItemLookUpFrame.setBounds(100, 100, 915, 663);
 		ItemLookUpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		ItemLookUpFrame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
-		
+		ItemLookUpFrame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));		
 		scrollPane=new JScrollPane();
 		scrollPane.setViewportView(null);
 		scrollPane.setBounds(10,89,582,503);
