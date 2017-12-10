@@ -34,7 +34,7 @@ public class ItemLookUp {
 		fillTable();
 		ItemLookUpFrame.setVisible(true);
 	}
-	
+
 	
 	protected void createWindow()
 	{
