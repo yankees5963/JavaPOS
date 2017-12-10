@@ -108,6 +108,18 @@ public class MainPOSScreen
 		btnAddItem.setBounds(435, 60, 89, 23);
 		panel.add(btnAddItem);
 		
+		JButton btnLookUp = new JButton("Item Lookup");
+		btnLookUp.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				ItemLookUp items=new ItemLookUp();			
+			}
+		});
+		btnLookUp.setBounds(525, 60, 89, 23);
+		panel.add(btnLookUp);
+
+		
 		JButton btnNewButton = new JButton("Pay");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
