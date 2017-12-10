@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Vector;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -105,6 +106,14 @@ public class MainPOSScreen
 		textField.setColumns(10);
 		
 		JButton btnAddItem = new JButton("Add Item");
+		btnAddItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				addItemToCart();
+			}
+		});
+		
 		btnAddItem.setBounds(435, 60, 89, 23);
 		panel.add(btnAddItem);
 		
@@ -218,6 +227,30 @@ public class MainPOSScreen
 		mnFile.add(mntmExit);
 	}
 
+	private void addItemToCart()
+	{
+		Connection con = new SQLConnection().openSQL();
+		String stmt = "dbo.getItem '"+textField.getText()+"'";
+		try {
+			Statement s=con.createStatement();
+			ResultSet r=s.executeQuery(stmt);
+			
+			if(r.next())
+			{			
+				Vector rows=new Vector();			
+				rows.addElement(r.getString(1));
+				rows.addElement(r.getString(2));
+				rows.addElement(1);
+				rows.addElement(r.getFloat(3));
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				model.addRow(rows);			
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 	protected void logout() 
 	{
