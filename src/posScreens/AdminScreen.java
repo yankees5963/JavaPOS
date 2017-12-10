@@ -29,6 +29,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -50,6 +51,8 @@ public class AdminScreen
 	
 	JFrame AdminScreen;
 	JTabbedPane tabbedPane;
+	JPanel Inventory;
+	ButtonGroup taxgroup;
 	private JTextField ID_Field;
 	private JPasswordField password1;
 	private JTextField FirstName;
@@ -59,8 +62,10 @@ public class AdminScreen
 	private JTextField Barcode;
 	private JTextField ProdName;
 	private JTextField Cost;
-	private JTextField textField_1;
-	private JTextField textField;
+	private JTextField StockOnHand;
+	private JTextField deptInput;
+	private JTextPane OutputBox;
+	private JComboBox Dept;
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -144,7 +149,7 @@ public class AdminScreen
 				AddUser();
 			}
 		});
-		btnAddUser.setBounds(162, 178, 89, 23);
+		btnAddUser.setBounds(167, 178, 89, 23);
 		adPanel.add(btnAddUser);
 		
 		textPane = new JTextPane();
@@ -160,10 +165,6 @@ public class AdminScreen
 		Password2.setBounds(152, 92, 104, 20);
 		adPanel.add(Password2);
 		
-		JLabel lblRoomForAdding = new JLabel("Room for adding Permission options");
-		lblRoomForAdding.setBounds(540, 111, 223, 89);
-		adPanel.add(lblRoomForAdding);
-		
 	}
 	protected void createWindow()
 	{
@@ -174,7 +175,7 @@ public class AdminScreen
 	}
 	protected void addInvPanel()
 	{
-		JPanel Inventory = new JPanel();
+		Inventory = new JPanel();
 		tabbedPane.addTab("Add Items", null, Inventory, null);
 		Inventory.setLayout(null);
 		
@@ -197,6 +198,11 @@ public class AdminScreen
 		ProdName.setColumns(10);
 		
 		JButton btnAddItem = new JButton("Add Item");
+		btnAddItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AddItem();
+			}
+		});
 		btnAddItem.setBounds(177, 164, 89, 23);
 		Inventory.add(btnAddItem);
 		
@@ -206,7 +212,7 @@ public class AdminScreen
 		
 		
 		ArrayList<String> depts = getDept();
-		JComboBox Dept = new JComboBox(depts.toArray());
+		Dept = new JComboBox(depts.toArray());
 		Dept.setToolTipText("");
 		Dept.setBounds(104, 33, 162, 20);
 		Inventory.add(Dept);
@@ -225,14 +231,16 @@ public class AdminScreen
 		lblTaxable.setBounds(10, 111, 84, 14);
 		Inventory.add(lblTaxable);
 		
-		ButtonGroup taxgroup = new ButtonGroup();
+		taxgroup = new ButtonGroup();
 		
 		JRadioButton chckbxNoTax = new JRadioButton("Non-Tax", true);
+		chckbxNoTax.setActionCommand("Non-Taxable");
 		taxgroup.add(chckbxNoTax);
 		chckbxNoTax.setBounds(104, 107, 93, 23);
 		Inventory.add(chckbxNoTax);
 		
 		JRadioButton chckbxTax = new JRadioButton("Taxable", false);
+		chckbxTax.setActionCommand("Taxable");
 		chckbxTax.setBounds(199, 107, 71, 23);
 		Inventory.add(chckbxTax);
 		
@@ -243,10 +251,10 @@ public class AdminScreen
 		lblStock.setBounds(10, 136, 100, 14);
 		Inventory.add(lblStock);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(127, 133, 139, 20);
-		Inventory.add(textField_1);
-		textField_1.setColumns(10);
+		StockOnHand = new JTextField();
+		StockOnHand.setBounds(127, 133, 139, 20);
+		Inventory.add(StockOnHand);
+		StockOnHand.setColumns(10);
 		
 		JLabel lblAddDepartments = new JLabel("Add Department");
 		lblAddDepartments.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -258,19 +266,24 @@ public class AdminScreen
 		lblDepartmentName.setBounds(412, 36, 113, 14);
 		Inventory.add(lblDepartmentName);
 		
-		textField = new JTextField();
-		textField.setBounds(535, 33, 148, 20);
-		Inventory.add(textField);
-		textField.setColumns(10);
+		deptInput = new JTextField();
+		deptInput.setBounds(535, 33, 148, 20);
+		Inventory.add(deptInput);
+		deptInput.setColumns(10);
 		
 		JButton btnAddDepartment = new JButton("Add Department");
+		btnAddDepartment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AddDept();
+			}
+		});
 		btnAddDepartment.setBounds(535, 57, 148, 23);
 		Inventory.add(btnAddDepartment);
 		
-		JTextPane textPane_1 = new JTextPane();
-		textPane_1.setEditable(false);
-		textPane_1.setBounds(298, 379, 211, 92);
-		Inventory.add(textPane_1);
+		OutputBox = new JTextPane();
+		OutputBox.setEditable(false);
+		OutputBox.setBounds(298, 379, 211, 92);
+		Inventory.add(OutputBox);
 	}
 	
 	private ArrayList<String> getDept() 
@@ -311,19 +324,19 @@ public class AdminScreen
 				String id = ID_Field.getText().toString();
 				if(id.trim().isEmpty())
 				{
-					textPane.setText("Login ID Can not Be Blank!");
+					OutputBox.setText("Login ID Can not Be Blank!");
 				}
 				else if(p1.trim().isEmpty())
 				{
-					textPane.setText("Password Can not Be Blank!");
+					OutputBox.setText("Password Can not Be Blank!");
 				}
 				else if(fname.trim().isEmpty())
 				{
-					textPane.setText("FirstName Name Can not Be Blank!");
+					OutputBox.setText("FirstName Name Can not Be Blank!");
 				}
 				else if(lname.trim().isEmpty())
 				{
-					textPane.setText("LastName Name Can not Be Blank!");
+					OutputBox.setText("LastName Name Can not Be Blank!");
 				}
 				else
 				{
@@ -335,7 +348,7 @@ public class AdminScreen
 					ps.setString(4,lname);
 					ps.execute();
 					con.close();
-					textPane.setText(fname + " " + lname + " Has been added successfully!");
+					OutputBox.setText(fname + " " + lname + " Has been added successfully!");
 				}
 			}
 			catch (NoSuchAlgorithmException | UnsupportedEncodingException | SQLException e) 
@@ -345,8 +358,141 @@ public class AdminScreen
 		}
 		else
 		{
-			textPane.setText("Passwords do not match!");
+			OutputBox.setText("Passwords do not match!");
 		}
 		
+	}protected void AddItem() 
+	{
+		//TODO: Add more filters for id/first&LastName sanity check
+		Connection con = new SQLConnection().openSQL();
+		try {
+			
+			if(Barcode.getText().toString().trim().isEmpty())
+			{
+				OutputBox.setText("Barcode cannot be blank!");
+			}
+			else if(ProdName.getText().toString().trim().isEmpty())
+			{
+				OutputBox.setText("ProductName cannot be blank!");
+			}
+			else if(Cost.getText().toString().trim().isEmpty())
+			{
+				OutputBox.setText("Cost cannot be blank!");
+			}
+			else if(StockOnHand.getText().toString().trim().isEmpty())
+			{
+				OutputBox.setText("Stock On Hand cannot be blank!");
+			}
+			else
+			{
+				String insert = "INSERT INTO PRODUCT ([BarCode],[DepartmentID],[ProductName],[Cost],[Taxable],[StockOnHand]) VALUES (?,?,?,?,?,?)";
+				PreparedStatement ps = con.prepareStatement(insert);
+				ps.setString(1,Barcode.getText().toString());
+				ps.setInt(2,getDeptID(Dept.getSelectedItem().toString()));
+				ps.setString(3, ProdName.getText().toString());
+				ps.setBigDecimal(4, new BigDecimal(Cost.getText()));
+				ps.setBoolean(5, getTaxable());
+				ps.setInt(6, Integer.parseInt(StockOnHand.getText()));
+				ps.execute();
+				con.close();
+				OutputBox.setText(ProdName.getText().toString() + " has been added to Products");
+			}
+		}
+		catch (SQLException e) 
+		{
+			if (e.getSQLState().startsWith("23"))
+			{
+				OutputBox.setText(Barcode.getText().toString() + " already exists, please use another barcode.");
+			}
+		}
+	
+	}
+	private boolean getTaxable() 
+	{
+		if(taxgroup.getSelection().getActionCommand().toString() == "Taxable")
+		{
+			return true;
+		}
+		return false;
+	}
+	private int getDeptID(String DeptName) 
+	{
+		Connection con = new SQLConnection().openSQL();
+		try 
+		{
+			String sq= "SELECT DeptID from Departments where DeptName = ?";
+			PreparedStatement ps = con.prepareStatement(sq);
+			ps.setString(1,DeptName);
+			ResultSet r = ps.executeQuery();
+			if(r.next())
+			{
+				return r.getInt("DeptID");
+			}
+			con.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return 1;
+	}
+	protected void AddDept() 
+	{
+		String inDept = deptInput.getText().toString();
+			//TODO: Add more filters for id/first&LastName sanity check
+			Connection con = new SQLConnection().openSQL();
+			try {
+				
+				if(inDept.trim().isEmpty())
+				{
+					OutputBox.setText("Deptmartment cannot be blank!");
+				}
+				else if(deptExists(inDept))
+				{
+					OutputBox.setText("Department already exists");
+				}
+				else
+				{
+					String insert = "INSERT INTO Departments ([DeptName]) VALUES (?)";
+					PreparedStatement ps = con.prepareStatement(insert);
+					ps.setString(1, inDept);
+					ps.execute();
+					con.close();
+					OutputBox.setText(inDept + " has been added to Deptartments");
+					refreshDDL(inDept);
+				}
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		
+	}
+	private void refreshDDL(String inDept) 
+	{
+		Dept.addItem(inDept);
+		Dept.repaint();
+		
+	}
+	protected boolean deptExists(String inDept) 
+	{
+		Connection con = new SQLConnection().openSQL();
+		try 
+		{
+			String sq= "SELECT * from Departments where DeptName = ?";
+			PreparedStatement ps = con.prepareStatement(sq);
+			ps.setString(1,inDept);
+			ResultSet r = ps.executeQuery();
+			if(r.next())
+			{
+				return true;
+			}
+			con.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
