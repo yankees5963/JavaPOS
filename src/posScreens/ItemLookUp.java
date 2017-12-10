@@ -28,7 +28,6 @@ public class ItemLookUp {
 	private JTable itemTable;
 	private JScrollPane scrollPane;
 	
-	
 	public ItemLookUp()
 	{
 		createWindow();
