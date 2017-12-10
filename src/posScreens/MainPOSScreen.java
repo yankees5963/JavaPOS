@@ -101,7 +101,7 @@ public class MainPOSScreen
 		panel.add(lblEnterBarcode);
 		
 		textField = new JTextField();
-		textField.setBounds(98, 61, 302, 20);
+		textField.setBounds(98, 61, 240, 20);
 		panel.add(textField);
 		textField.setColumns(10);
 		
@@ -114,7 +114,7 @@ public class MainPOSScreen
 			}
 		});
 		
-		btnAddItem.setBounds(435, 60, 89, 23);
+		btnAddItem.setBounds(348, 60, 89, 23);
 		panel.add(btnAddItem);
 		
 		JButton btnLookUp = new JButton("Item Lookup");
@@ -125,7 +125,7 @@ public class MainPOSScreen
 				ItemLookUp items=new ItemLookUp();			
 			}
 		});
-		btnLookUp.setBounds(525, 60, 89, 23);
+		btnLookUp.setBounds(476, 60, 116, 23);
 		panel.add(btnLookUp);
 
 		
