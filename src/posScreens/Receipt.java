@@ -28,6 +28,7 @@ import sql.SQLConnection;
  * 	Description: Lists all products
  * */
 
+
 public class Receipt {
 	private JFrame ReceiptFrame = new JFrame();	
 	private JLabel lblReceipt=new JLabel("Receipt");
