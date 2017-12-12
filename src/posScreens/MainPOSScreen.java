@@ -134,6 +134,7 @@ public class MainPOSScreen
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				JOptionPane.showMessageDialog(panel, "Purchase has been completed! Thank you!");
+				Receipt newReceipt=new Receipt(1);
 				//TODO Clear Order & Write to Transaction table
 			}
 		});
