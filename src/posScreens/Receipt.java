@@ -14,9 +14,7 @@ import java.awt.print.PrinterJob;
 import java.sql.*;
 import java.util.Locale;
 
-
 import javax.swing.*;
-
 
 import sql.SQLConnection;
 
@@ -25,7 +23,7 @@ import sql.SQLConnection;
  * 	CMSC 495
  * 	University of Maryland, University College
  * 
- * 	Description: Lists all products
+ * 	Description: Show receipt of transaction
  * */
 
 public class Receipt {

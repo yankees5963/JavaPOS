@@ -209,6 +209,7 @@ public class MainPOSScreen {
                 logout();
             }
         });
+        
 
         JMenuItem mntmAdmin = new JMenuItem("Administrative Tasks");
         mntmAdmin.addActionListener(new ActionListener() {
@@ -219,8 +220,16 @@ public class MainPOSScreen {
                 POSframe.repaint();
             }
         });
+        
+        JMenuItem salesReport = new JMenuItem("Sales Report");
+        salesReport.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent g) {
+            	SalesReport sR=new SalesReport();
+            }
+        });
 
         mnFile.add(mntmAdmin);
+        mnFile.add(salesReport);
         mnFile.add(mntmLogOut);
         mnFile.add(mntmExit);
     }
