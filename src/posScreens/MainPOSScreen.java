@@ -35,6 +35,7 @@ public class MainPOSScreen {
     private JTextField TotalField;
     private JTable table;
     private double totalPurchase = 0.0;
+    private float tax=0;
 
     public MainPOSScreen(int id) {
         UserID = id;
@@ -65,12 +66,13 @@ public class MainPOSScreen {
     protected void initialize() {
         createWindow();
         addPanel();
+        getTax();
 
         POSframe.setVisible(true);
         //return POSframe;
 
     }
-
+    
     protected void createWindow() {
         POSframe.getContentPane().setBackground(Color.WHITE);
         POSframe.setIconImage(Toolkit.getDefaultToolkit().getImage("lib/POS.png"));
@@ -129,7 +131,7 @@ public class MainPOSScreen {
         table.setModel(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Barcode", "Item Name", "Quantity", "Price"
+                    "Barcode", "Item Name", "Quantity", "Price", "Taxable"
                 }
         ) {
             /**
@@ -137,7 +139,7 @@ public class MainPOSScreen {
              */
             private static final long serialVersionUID = 1L;
             Class[] columnTypes = new Class[]{
-                Integer.class, String.class, Integer.class, Double.class
+                Integer.class, String.class, Integer.class, Double.class, Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -157,14 +159,16 @@ public class MainPOSScreen {
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 JOptionPane.showMessageDialog(panel, "Purchase has been completed! Thank you!");
-                Receipt newReceipt = new Receipt(1);
+                int transID=createOrder();
+                completeOrder(transID);
+                Receipt newReceipt = new Receipt(transID);
 
                 //TODO Clear Order & Write to Transaction table
                 DefaultTableModel dtm = (DefaultTableModel) table.getModel();
                 dtm.setRowCount(0);
                 // Reset the total to zero
                 totalPurchase = 0.0;
-                addToTotal(0.0f);
+                addToTotal(0.0f,false);
             }
         });
         btnNewButton.setBounds(602, 175, 287, 83);
@@ -234,13 +238,83 @@ public class MainPOSScreen {
                 rows.addElement(r.getString(2));
                 rows.addElement(1);
                 rows.addElement(r.getFloat(3));
+                rows.addElement(r.getBoolean(4));
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.addRow(rows);
-                addToTotal(r.getFloat(3));
+                addToTotal(r.getFloat(3), r.getBoolean(4));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    private void getTax()
+    {
+    	Connection con=new SQLConnection().openSQL();
+    	String stmt="dbo.spGetTax";
+		try {
+			Statement s=con.createStatement();
+			ResultSet r = s.executeQuery(stmt);
+			if(r.next())
+			{
+				this.tax=r.getFloat(1);
+			}
+		}
+    	catch(SQLException e)
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    
+    private void completeOrder(int transID) {
+    	Connection con=new SQLConnection().openSQL();
+    	DefaultTableModel tableModel=new DefaultTableModel();
+    	String barCode="";
+    	float salesPrice=0;
+    	int qty=0;
+    	int numRows=table.getModel().getRowCount();
+    	for(int i=0;i<numRows;i++)
+    	{
+    		String stmt="dbo.spAddItemTrans "+transID+", '"+table.getModel().getValueAt(i, 0)+"', "+table.getModel().getValueAt(i, 3)+", "+table.getModel().getValueAt(i, 2)+", "+table.getModel().getValueAt(i, 4);
+    		try {
+    			Statement s=con.createStatement();
+    			s.execute(stmt);
+    			
+    		}
+    		catch(SQLException e)
+    		{
+    			e.printStackTrace();
+    		}
+    	}
+    	
+    	String stmt="dbo.spCompleteTrans "+transID;
+    	try {
+    		Statement s=con.createStatement();
+    		s.execute(stmt);
+    	}
+    	catch(SQLException e)
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    
+    private int createOrder() {
+    	int transID=0;
+    	//Creates Transaction
+    	Connection con=new SQLConnection().openSQL();
+    	String stmt = "dbo.sqCreateTrans "+UserID;
+    	try {
+    		Statement s=con.createStatement();
+    		ResultSet r=s.executeQuery(stmt);
+    		if(r.next()) {
+    			transID=r.getInt(1);
+    		}
+    	}
+    	catch(SQLException e)
+    	{
+    		e.printStackTrace();
+    	}
+    	return transID;
     }
 
     protected void logout() {
@@ -248,9 +322,16 @@ public class MainPOSScreen {
         new LoginScreen();
     }
 
-    private void addToTotal(float amount) {
+    private void addToTotal(float amount, boolean taxable) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        totalPurchase += amount;
+        if(taxable)
+        {
+        	totalPurchase += amount+Math.round((amount*tax)*100f)/100f;
+        }
+        else
+        {
+        	totalPurchase += amount;
+        }      
         TotalField.setText(formatter.format(totalPurchase));
     }
 }
